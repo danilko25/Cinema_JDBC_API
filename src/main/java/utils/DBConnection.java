@@ -11,7 +11,7 @@ public class DBConnection {
 
     private DBConnection() {};
 
-    static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         try{
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
