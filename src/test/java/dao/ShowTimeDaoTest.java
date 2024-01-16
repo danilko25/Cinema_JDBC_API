@@ -21,10 +21,6 @@ class ShowTimeDaoTest {
         return new Movie(null, prefix + "Title", prefix + "Description", duration);
     }
 
-    private CinemaUser createUser(String prefix, Role role){
-        return new CinemaUser(null, prefix + "Name", prefix + "@gmail.com", prefix + "Password", role);
-    }
-
     private ShowTimeDao showTimeDao = ShowTimeDao.getInstance();
     private MovieDao movieDao = MovieDao.getInstance();
 
