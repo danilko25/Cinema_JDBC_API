@@ -1,12 +1,15 @@
 package utils;
 
+import jakarta.servlet.GenericServlet;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public final class PropertiesReader {
-    private static final String PROP_PATH = "src/main/resources/app.properties";
+    private static final String PROP_PATH = "WEB-INF/app.properties";
     private static final Properties PROPERTIES = new Properties();
 
     private PropertiesReader() {
@@ -14,7 +17,8 @@ public final class PropertiesReader {
 
     static {
         try {
-            PROPERTIES.load(new FileInputStream(PROP_PATH));
+            InputStream fileStream = PropertiesReader.class.getClassLoader().getResourceAsStream("app.properties");
+            PROPERTIES.load(fileStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
