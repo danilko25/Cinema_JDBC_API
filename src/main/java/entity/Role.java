@@ -4,11 +4,21 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum Role {
-    ADMIN_ROLE, USER_ROLE;
+    USER_ROLE("User"), ADMIN_ROLE("Admin");
 
-    public static Optional<Role> find(String role){
+    Role(String title) {
+        this.title = title;
+    }
+
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public static Optional<Role> find(String role) {
         return Arrays.stream(values())
                 .filter(r -> r.name()
-                .equals(role)).findFirst();
+                        .equals(role)).findFirst();
     }
 }

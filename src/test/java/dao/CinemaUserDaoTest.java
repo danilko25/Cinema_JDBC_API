@@ -138,4 +138,20 @@ class CinemaUserDaoTest {
         assertTrue(userOptional.isEmpty());
         assertEquals(1, beforeDeleting - afterDeleting);
     }
+
+    @Test
+    void login(){
+        CinemaUser loginUser = new CinemaUser();
+        loginUser.setName("loginTest");
+        String email = "login@gmail.com";
+        loginUser.setEmail(email);
+        String password = "loginPassword";
+        loginUser.setPassword(password);
+        loginUser.setRole(Role.ADMIN_ROLE);
+        userDao.save(loginUser);
+        var userOptional = userDao.getUserByEmailAndPassword(email, password);
+        assertTrue(userOptional.isPresent());
+        var emptyOptional = userDao.getUserByEmailAndPassword("not exist", "no password");
+        assertTrue(emptyOptional.isEmpty());
+    }
 }

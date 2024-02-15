@@ -1,6 +1,8 @@
 package dao;
 
+import dao.interfaces.IUserDao;
 import entity.CinemaUser;
+import entity.Movie;
 import entity.Role;
 import utils.DBConnection;
 
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public final class CinemaUserDao implements IDao<CinemaUser, Long> {
+public final class CinemaUserDao implements IUserDao {
 
     private CinemaUserDao() {
     }
@@ -36,6 +38,10 @@ public final class CinemaUserDao implements IDao<CinemaUser, Long> {
             """;
     private static final String DELETE_SQL = """
             DELETE FROM cinema_user WHERE id = ?
+            """;
+
+    private static final String SELECT_BY_EMAIL_AND_PASSWORD_SQL = SELECT_SQL + """
+            WHERE email = ? AND password = ?
             """;
 
     @Override
@@ -114,6 +120,20 @@ public final class CinemaUserDao implements IDao<CinemaUser, Long> {
              var statement = connection.prepareStatement(DELETE_SQL)){
             statement.setLong(1, id);
             return statement.executeUpdate()>0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<CinemaUser> getUserByEmailAndPassword(String email, String password){
+        try (var connection = DBConnection.getConnection();
+             var statement = connection.prepareStatement(SELECT_BY_EMAIL_AND_PASSWORD_SQL)){
+            statement.setString(1, email);
+            statement.setString(2, password);
+            var rs = statement.executeQuery();
+            if (rs.next()){
+                return Optional.of(getUserFromResultSet(rs));
+            }else return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
